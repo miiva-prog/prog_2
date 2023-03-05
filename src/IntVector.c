@@ -1,4 +1,7 @@
 #include "IntVector.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <stddef.h>
 
 IntVector* int_vector_new(size_t initial_capacity)
 {
@@ -36,7 +39,6 @@ IntVector* int_vector_copy(const IntVector *v)
             ve->data[n] = v->data[n];
         }
     }
-
     return ve;
 }
 
