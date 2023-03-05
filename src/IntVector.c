@@ -127,8 +127,10 @@ int int_vector_resize(IntVector *v, size_t new_size)
             v->size++;
         }
         return 0;
+    }else{
+        int_vector_shrink_to_fit(v);
+        return 0;
     }
-
     return -1;
 }
 

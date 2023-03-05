@@ -6,29 +6,20 @@ int main()
 {
     IntVector *ve = NULL;
 
-    IntVector *v = NULL;
-
     ve = malloc(sizeof(*ve));
 
-    ve->capacity = 10;
+    ve->capacity = 5;
+    ve->size = 2;
+    ve->data = (int *)malloc(ve->capacity * sizeof(int));
 
-    ve->size = 8;
+    for(int n = 0;n < ve->size;n++){
+        ve->data[n] = n + 1;
+    }
 
-    // ve->data = (int *)malloc(ve->capacity * sizeof(int));
+    int_vector_reserve(ve,8);
 
-    // for(int n = 0;n < ve->size;n++){
-    //     ve->data[n] = n + 1;
-    // }
-
-    v = int_vector_copy(ve);
-
-    printf("%ld %ld\n",v->capacity,v->size);
-
-    // for(int n = 0;n < v->capacity;n++){
-    //     printf("%d ",v->data[n]);
-    // }
-
-    // printf("\n");    
-    
-    // int_vector_free(ve);
+    for(int n = 0;n < ve->size;n++){
+        printf("%d ",ve->data[n]);
+    }
+    printf("\n");
 }
