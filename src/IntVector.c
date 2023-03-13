@@ -11,16 +11,17 @@ IntVector* int_vector_new(size_t initial_capacity)
     IntVector *vec = NULL;
 
     vec = malloc(sizeof(*vec));
-    vec->capacity = initial_capacity;
 
     if(vec == NULL)
         return NULL;
     
     vec->data = (int *)malloc(initial_capacity * sizeof(int));
 
-    if(vec->data == NULL)
+    if(vec->data == NULL){
         return NULL;
-
+    }else{
+        vec->capacity = initial_capacity;
+    }
     return vec;
 }
 
@@ -79,11 +80,11 @@ int int_vector_push_back(IntVector *v, int item)
         v->size++;
         return 0;
     }else if(v->capacity == v->size){
-        v->capacity *= 2;
-        v->data = (int *)realloc(v->data,v->capacity * sizeof(int));
+        v->data = (int *)realloc(v->data,v->capacity * 2 * sizeof(int));
         if(v->data == NULL){
             return -1;
         }else{
+            v->capacity *= 2;
             v->data[v->size] = item;
             v->size++;
             return 0;
@@ -105,9 +106,9 @@ int int_vector_shrink_to_fit(IntVector *v)
     if(v->capacity == v->size){
         return 0;
     }else if(v->capacity > v->size){
-        v->capacity = v->size;
-        v->data = (int *)realloc(v->data,v->capacity * sizeof(int));
+        v->data = (int *)realloc(v->data,v->size * sizeof(int));
         if(v->data != NULL){
+            v->capacity = v->size;
             return 0;
         }else{
             return -1;
@@ -119,10 +120,13 @@ int int_vector_shrink_to_fit(IntVector *v)
 int int_vector_resize(IntVector *v, size_t new_size)
 {
     if(v->capacity < new_size){
-        v->capacity = new_size;
-        v->data = (int *)realloc(v->data,v->capacity * sizeof(int));
-        if(v->data == NULL)
+        v->data = (int *)realloc(v->data,new_size * sizeof(int));
+        if(v->data == NULL){
             return -1;
+        }else{
+            v->capacity = new_size;
+            return 0;
+        }
     }
 
     if(new_size > v->size){
@@ -141,11 +145,11 @@ int int_vector_resize(IntVector *v, size_t new_size)
 int int_vector_reserve(IntVector *v, size_t new_capacity)
 {
     if(v->capacity < new_capacity){
-        v->capacity = new_capacity;
-        v->data = (int *)realloc(v->data,v->capacity * sizeof(int));
+        v->data = (int *)realloc(v->data,new_capacity * sizeof(int));
         if(v->data == NULL){
             return -1;
         }else{
+            v->capacity = new_capacity;
             return 0;
         }
     }
