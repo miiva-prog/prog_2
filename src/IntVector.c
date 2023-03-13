@@ -5,9 +5,13 @@
 
 IntVector* int_vector_new(size_t initial_capacity)
 {
+    if(initial_capacity == 0)
+        return NULL;
+
     IntVector *vec = NULL;
 
     vec = malloc(sizeof(*vec));
+    vec->capacity = initial_capacity;
 
     if(vec == NULL)
         return NULL;
@@ -74,7 +78,7 @@ int int_vector_push_back(IntVector *v, int item)
         v->data[v->size] = item;
         v->size++;
         return 0;
-    }else{
+    }else if(v->capacity == v->size){
         v->capacity *= 2;
         v->data = (int *)realloc(v->data,v->capacity * sizeof(int));
         if(v->data == NULL){
@@ -85,6 +89,7 @@ int int_vector_push_back(IntVector *v, int item)
             return 0;
         }
     }
+    return -1;
 }
 
 void int_vector_pop_back(IntVector *v)
@@ -97,11 +102,9 @@ void int_vector_pop_back(IntVector *v)
 
 int int_vector_shrink_to_fit(IntVector *v)
 {
-    if(v->capacity < v->size){
-        return -1;
-    }else if(v->capacity == v->size){
+    if(v->capacity == v->size){
         return 0;
-    }else{
+    }else if(v->capacity > v->size){
         v->capacity = v->size;
         v->data = (int *)realloc(v->data,v->capacity * sizeof(int));
         if(v->data != NULL){
@@ -110,6 +113,7 @@ int int_vector_shrink_to_fit(IntVector *v)
             return -1;
         }
     }
+    return -1;
 }
 
 int int_vector_resize(IntVector *v, size_t new_size)
